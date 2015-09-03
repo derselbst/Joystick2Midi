@@ -10,24 +10,7 @@ const int Y_AXIS = 1;
 const int L_AXIS = 4;
 const int R_AXIS = 5;
 
-//int main2(int argc, char ** argv) {
-//	snd_seq_t * seq = connect();
-//	if (!seq) return 1;
-//
-//	note_on(60);
-//	note_on(64);
-//	note_on(67);
-//	snd_seq_drain_output(seq);
-//	usleep(3000);
-//	note_off(60);
-//	note_off(64);
-//	note_off(67);
-//
-//	snd_seq_close(seq);
-//	return 0;
-//}
-
-// some how map 16 bit value to 14 bit value
+// some how map 16 bit value to 14 bit value used for pitchbend
 inline int AxisToPitchBend(int16_t axis)
 {
     return axis>>2;
@@ -39,15 +22,6 @@ int main()
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK);
     snd_seq_t * seq = connect();
     if (!seq) return 1;
-//
-//    sleep(5);
-//
-//    note_on(60);
-//    sleep(3);
-//    note_off(60);
-//
-//
-//return 0;
 
 // Check for joystick
     if(SDL_NumJoysticks()>0)
@@ -94,6 +68,7 @@ int main()
                         break;
 
                     case SDL_JOYHATMOTION:
+                        // TODO
                         break;
 
                     case SDL_JOYBALLMOTION:

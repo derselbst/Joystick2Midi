@@ -20,7 +20,7 @@ snd_seq_t * connect()
         fprintf(stderr, "Could not set client name\n");
     }
 
-    source_port = snd_seq_create_simple_port(s, "YAxis", SND_SEQ_PORT_CAP_READ|SND_SEQ_PORT_CAP_SUBS_READ, SND_SEQ_PORT_TYPE_MIDI_GENERIC | SND_SEQ_PORT_TYPE_APPLICATION);
+    source_port = snd_seq_create_simple_port(s, "Joystick", SND_SEQ_PORT_CAP_READ|SND_SEQ_PORT_CAP_SUBS_READ, SND_SEQ_PORT_TYPE_MIDI_GENERIC | SND_SEQ_PORT_TYPE_APPLICATION);
     if (source_port < 0)
     {
         fprintf(stderr, "Error: snd_seq_create_simple_port\n");
