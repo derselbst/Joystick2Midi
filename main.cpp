@@ -6,6 +6,10 @@
 
 using namespace std;
 
+// index of the joysick to be used
+const int JoystickIdx = 0;
+
+// index of the certain axes
 const int Y_AXIS = 1;
 const int L_AXIS = 4;
 const int R_AXIS = 5;
@@ -21,21 +25,29 @@ int main()
     // FIXME: We don't need video, but without it SDL will fail to work in SDL_WaitEvent()
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK);
     snd_seq_t * seq = connect();
-    if (!seq) return 1;
-
-// Check for joystick
-    if(SDL_NumJoysticks()>0)
+    if (!seq)
     {
+      cerr << "Something went wrong when connecting to ALSA_seq." << endl;
+      return EXIT_FAILURE;
+    }
+    
+// Check for joystick
+    if(SDL_NumJoysticks()==0)
+    {
+      cerr << "No joysticks available!" << endl;
+      return EXIT_FAILURE;
+    }
+
         // Open joystick
-        SDL_Joystick *joy=SDL_JoystickOpen(0);
+        SDL_Joystick *joy=SDL_JoystickOpen(JoystickIdx);
 
         if(joy)
         {
-            printf("Opened Joystick 0\n");
-            printf("Name: %s\n", SDL_JoystickName(0));
-            printf("Number of Axes: %d\n", SDL_JoystickNumAxes(joy));
-            printf("Number of Buttons: %d\n", SDL_JoystickNumButtons(joy));
-            printf("Number of Balls: %d\n", SDL_JoystickNumBalls(joy));
+            cout << "Opened Joystick " << JoystickIdx << endl;
+            cout << "Name: " << SDL_JoystickName(JoystickIdx) << endl;
+            cout << "Number of Axes: " << SDL_JoystickNumAxes(joy) << endl;
+            cout << "Number of Buttons: " << SDL_JoystickNumButtons(joy) << endl;
+            cout << "Number of Balls: " << SDL_JoystickNumBalls(joy) << endl;
 
 
             Sint16* axes    = (Sint16*)calloc(SDL_JoystickNumAxes(joy),    sizeof(Sint16));
@@ -78,11 +90,11 @@ int main()
 
                     case SDL_QUIT:
                         quit = 1;
-                        printf("Recieved interrupt, exiting\n");
+                        cout << "Recieved interrupt, exiting" << endl;
                         break;
 
                     default:
-                        fprintf(stderr, "Error: Unhandled event type: %d\n", event.type);
+                        cerr << "Error: Unhandled event type: " << event.type << endl;
                         break;
                     }
                 }
@@ -99,15 +111,14 @@ int main()
         }
         else
         {
-            printf("Couldn't open Joystick 0\n");
+            cout << "Couldn't open Joystick " << JoystickIdx << ": " << SDL_GetError() << endl;
         }
 
         // Close if opened
-        if(SDL_JoystickOpened(0))
+        if(SDL_JoystickOpened(JoystickIdx))
         {
             SDL_JoystickClose(joy);
         }
 
         snd_seq_close(seq);
-    }
 }
