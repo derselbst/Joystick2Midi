@@ -108,6 +108,10 @@ int main()
                     pitch(pitchUp-pitchDown);
                 }
             }
+            
+            free(axes);
+	    free(buttons);
+	    free(balls);
         }
         else
         {
