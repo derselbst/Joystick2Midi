@@ -46,7 +46,6 @@ void send_ev()
 
     int i = snd_seq_event_output(seq, &ev);
     snd_seq_drain_output(seq);
-    printf("%d\n",i);
 }
 
 void note_on(int note, int velocity, int channel)
